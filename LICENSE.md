@@ -1,2 +1,2 @@
 
-Copyright (C) 2018 
+Copyright Arolla (C) 2018 
