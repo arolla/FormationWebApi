@@ -1,3 +1,4 @@
+{
 ﻿using System;
 using System.Web.Http;
 using Bookings.Hosting.Models;
