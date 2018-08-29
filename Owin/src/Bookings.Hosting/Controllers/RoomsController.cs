@@ -4,7 +4,7 @@ using Bookings.Hosting.Models;
 
 namespace Bookings.Hosting.Controllers
 {
-    [RoutePrefix("api/[controller]")]
+    [RoutePrefix("api/rooms")]
     public class RoomsController : ApiController
     {
         [HttpGet]
