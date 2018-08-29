@@ -1,4 +1,4 @@
-﻿using System.Web.Http;
+using System.Web.Http;
 using Owin;
 
 namespace Bookings.Hosting
@@ -8,12 +8,8 @@ namespace Bookings.Hosting
         public void Configuration(IAppBuilder appBuilder)
         {
             HttpConfiguration config = new HttpConfiguration(); 
-            config.Routes.MapHttpRoute( 
+            config.MapHttpAttributeRoutes();
                 name: "DefaultApi", 
-                routeTemplate: "api/{controller}/{id}", 
-                defaults: new { id = RouteParameter.Optional } 
-            ); 
-
             appBuilder.UseWebApi(config); 
         }
     }
