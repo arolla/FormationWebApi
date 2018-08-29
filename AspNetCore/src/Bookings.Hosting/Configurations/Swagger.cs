@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -20,7 +21,11 @@ namespace Bookings.Hosting.Configurations
         public static IServiceCollection ConfigureSwagger(this IServiceCollection serviceCollection)
         {
             return serviceCollection.AddSwaggerGen(c =>
-                c.SwaggerDoc("v1", new Info { Title = "Une super API de réservation de chambre", Version = "v1" }));
+                {
+                    c.SwaggerDoc("v1", new Info {Title = "Une super API de réservation de chambre", Version = "v1"});
+                    var filePath = Path.Combine(System.AppContext.BaseDirectory, "Bookings.Hosting.xml");
+                    c.IncludeXmlComments(filePath);
+                });
         }
     }
 }
