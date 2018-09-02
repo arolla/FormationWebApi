@@ -142,12 +142,13 @@ dotnet run --project src/Bookings.Hosting/Bookings.Hosting.csproj
 ## Pour AspNetCore
 
 ```
-mdkir AspNetCore 
+mdkir AspNetCore
+cd AspNetCore
 dotnet new sln -n Bookings.AspNetCore
 mkdir src
 cd src
 dotnet new webapi -n Bookings.Hosting
-dotnet sln ../Bookings.AspNetCore..sln add Bookings.Hosting/Bookings.Hosting.csproj
+dotnet sln ../Bookings.AspNetCore.sln add Bookings.Hosting/Bookings.Hosting.csproj
 ```
 
 Ensuite pour exécuter le programme depuis le répertoire de la solution AspNetCore
