@@ -12,7 +12,7 @@ namespace Bookings.Hosting.Controllers
         }
 
         // GET api/values/5
-        [HttpGet()]
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             return this.Ok("value");
@@ -25,7 +25,7 @@ namespace Bookings.Hosting.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut()]
+        [HttpPut]
         public void Put(int id, [FromBody] string value)
         {
         }
