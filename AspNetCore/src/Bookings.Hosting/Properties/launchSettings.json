@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Commerce.Hosting": {
+    "Bookings.Hosting": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
