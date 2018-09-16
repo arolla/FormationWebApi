@@ -27,7 +27,8 @@ dotnet new console -n Bookings.Hosting
 ```
 dotnet sln ../Bookings.Owin.sln add Bookings.Hosting/Bookings.Hosting.csproj
 cd Bookings.Hosting
-dotnet add Bookings.Hosting.csproj package Microsoft.AspNet.WebApi.OwinSelfHost 
+dotnet add Bookings.Hosting.csproj package Microsoft.AspNet.WebApi.OwinSelfHost -v 5.2.6
+dotnet add Bookings.Hosting.csproj package Microsoft.Owin.Hosting -v 4.0.0
 mkdir Controllers
 ```
 
