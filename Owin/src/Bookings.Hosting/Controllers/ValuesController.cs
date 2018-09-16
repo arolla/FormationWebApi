@@ -2,7 +2,6 @@
 
 namespace Bookings.Hosting.Controllers
 {
-    [RoutePrefix("api/valus")]
     public class ValuesController : ApiController
     {
         // GET api/values
@@ -13,8 +12,7 @@ namespace Bookings.Hosting.Controllers
         }
 
         // GET api/values/5
-        [Route("{id}")]
-        [HttpGet()]
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             return this.Ok("value");
@@ -27,14 +25,12 @@ namespace Bookings.Hosting.Controllers
         }
 
         // PUT api/values/5
-        [Route("{id}")]
-        [HttpPut()]
+        [HttpPut]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/values/5
-        [Route("{id}")]
         [HttpDelete]
         public void Delete(int id)
         {

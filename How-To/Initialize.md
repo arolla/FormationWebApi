@@ -7,23 +7,27 @@ dotnet new global --sdk-version 2.1.400
 ```
 
 ## Pour Owin
-> :warning: Note pour raison de simplification le projet est une console et non un web host car ces projets ne sont pas encore supporter par le nouveau format de projet arrivé avec visual studio 2017
+> :warning: Note pour raison de simplification le projet est une console et non un 
+web host car ces projets ne sont pas encore supporter par le nouveau format 
+de projet arrivé avec visual studio 2017
 
+Setup de la solution
 
 ```
 mdkir Owin 
+cd Owin
 dotnet new sln -n Bookings.Owin
 mkdir src
 cd src
 dotnet new console -n Bookings.Hosting
 ```
-> Changer la propriété TargetFramework du projet créé en net461
+
+> Changer la propriété TargetFramework du projet créé en ```net461```
 
 ```
-dotnet sln ../Bookings.Owin..sln add Bookings.Hosting/Bookings.Hosting.csproj
+dotnet sln ../Bookings.Owin.sln add Bookings.Hosting/Bookings.Hosting.csproj
 cd Bookings.Hosting
 dotnet add Bookings.Hosting.csproj package Microsoft.AspNet.WebApi.OwinSelfHost 
-dotnet add Bookings.Hosting.csproj package Microsoft.Owin.SelfHost
 mkdir Controllers
 ```
 
@@ -86,14 +90,13 @@ namespace Bookings.Hosting
 }
 ```
 
-Enfin ajouter dans le répertoire ```Controllers```
+Enfin ajouter dans le répertoire ```Controllers``` et un controller ```ValuesController.cs``` comme suit
 
 ```csharp
 using System.Web.Http;
 
 namespace Bookings.Hosting.Controllers
 {
-    [RoutePrefix("api/valus")]
     public class ValuesController : ApiController
     {
         // GET api/values
@@ -104,8 +107,7 @@ namespace Bookings.Hosting.Controllers
         }
 
         // GET api/values/5
-        [Route("{id}")]
-        [HttpGet()]
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             return this.Ok("value");
@@ -118,14 +120,12 @@ namespace Bookings.Hosting.Controllers
         }
 
         // PUT api/values/5
-        [Route("{id}")]
-        [HttpPut()]
+        [HttpPut]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/values/5
-        [Route("{id}")]
         [HttpDelete]
         public void Delete(int id)
         {
@@ -134,21 +134,21 @@ namespace Bookings.Hosting.Controllers
 }
 ```
 
-Ensuite pour exécuter le programme depuis le répertoire de la solution Owin
+Ensuite pour exécuter le programme depuis le répertoire de la solution Owin (*\FormationWebApi\Owin)
 ```
 dotnet run --project src/Bookings.Hosting/Bookings.Hosting.csproj
 ```
 
-
 ## Pour AspNetCore
 
 ```
-mdkir AspNetCore 
+mdkir AspNetCore
+cd AspNetCore
 dotnet new sln -n Bookings.AspNetCore
 mkdir src
 cd src
 dotnet new webapi -n Bookings.Hosting
-dotnet sln ../Bookings.AspNetCore..sln add Bookings.Hosting/Bookings.Hosting.csproj
+dotnet sln ../Bookings.AspNetCore.sln add Bookings.Hosting/Bookings.Hosting.csproj
 ```
 
 Ensuite pour exécuter le programme depuis le répertoire de la solution AspNetCore
