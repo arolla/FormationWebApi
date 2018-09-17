@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -12,6 +14,7 @@ namespace Bookings.Hosting.Configurations
             applicationBuilder.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
+                   
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Une super API de réservation de chambre");
                 });
 
@@ -23,8 +26,10 @@ namespace Bookings.Hosting.Configurations
             return serviceCollection.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new Info {Title = "Une super API de réservation de chambre", Version = "v1"});
-                    var filePath = Path.Combine(System.AppContext.BaseDirectory, "Bookings.Hosting.xml");
-                    c.IncludeXmlComments(filePath);
+                    var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
+                    var commentsFile = Path.Combine(baseDirectory, commentsFileName);
+                    c.IncludeXmlComments(commentsFile);
                 });
         }
     }
