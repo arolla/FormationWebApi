@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 using Bookings.Hosting.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookings.Hosting.Controllers
@@ -12,6 +12,8 @@ namespace Bookings.Hosting.Controllers
     /// </summary>
     [Route("api/v1/availabilities")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AvailabilitiesController : ControllerBase
     {
         /// <summary>
@@ -20,8 +22,7 @@ namespace Bookings.Hosting.Controllers
         /// <param name="from">the start of the period</param>
         /// <param name="to">the end of the period</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(IEnumerable<Availability>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(IEnumerable<Availability>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult Get([Required]DateTimeOffset from, [Required]DateTimeOffset to)
         {

@@ -11,6 +11,8 @@ namespace Bookings.Hosting.Controllers
     /// The availabilities
     /// </summary>
     [RoutePrefix("api/v1/availabilities")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError)]
+    [SwaggerResponse(HttpStatusCode.BadRequest)]
     public class AvailabilitiesController : ApiController
     {
         /// <summary>
@@ -20,7 +22,6 @@ namespace Bookings.Hosting.Controllers
         /// <param name="to">the end of the period</param>
         /// <returns>the rooms that are available during this period with their price</returns>
         [SwaggerResponse(HttpStatusCode.OK, type: typeof(IEnumerable<Availability>))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError)]
         [HttpGet]
         [Route]
         public IHttpActionResult Get(DateTimeOffset from, DateTimeOffset to)
