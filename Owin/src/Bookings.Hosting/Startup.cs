@@ -1,6 +1,8 @@
 using System.Web.Http;
 using Owin;
 
+using Bookings.Hosting.Configurations;
+
 namespace Bookings.Hosting
 {
     public class Startup
@@ -9,6 +11,7 @@ namespace Bookings.Hosting
         {
             HttpConfiguration config = new HttpConfiguration(); 
             config.MapHttpAttributeRoutes();
+            config.ConfigureSwagger();
             appBuilder.UseWebApi(config); 
         }
     }
