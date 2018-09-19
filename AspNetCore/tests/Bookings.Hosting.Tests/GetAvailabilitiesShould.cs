@@ -23,6 +23,17 @@ namespace Bookings.Hosting.Tests
         }
 
         [Test]
+        public async Task Return_Ok_when_no_period_filled()
+        {
+            using (var server = new TestServer(new WebHostBuilder().UseStartup<TestsStartup>()))
+            using (var client = server.CreateClient())
+            {
+                var response = await client.GetAsync($"api/v1/availabilities");
+                Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            }
+        }
+
+        [Test]
         public async Task Return_BadRequest_when_the_period_does_not_cover_at_least_one_night()
         {
             using (var server = new TestServer(new WebHostBuilder().UseStartup<TestsStartup>()))
@@ -30,7 +41,7 @@ namespace Bookings.Hosting.Tests
             {
                 var from = DateTimeOffset.Now;
                 var to = from;
-                var response = await client.GetAsync($"api/v1/availabilities?from={from}&to={to}");
+                var response = await client.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
                 Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             }
         }
@@ -43,7 +54,7 @@ namespace Bookings.Hosting.Tests
             {
                 var from = DateTimeOffset.Now.AddDays(15);
                 var to = DateTimeOffset.Now;
-                var response = await client.GetAsync($"api/v1/availabilities?from={from}&to={to}");
+                var response = await client.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
                 Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             }
         }

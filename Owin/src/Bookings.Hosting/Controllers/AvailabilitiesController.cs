@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using Bookings.Hosting.Models;
@@ -18,25 +17,31 @@ namespace Bookings.Hosting.Controllers
         /// <summary>
         /// Allow to search the availabilities between 2 dates
         /// </summary>
-        /// <param name="from">the start of the period</param>
-        /// <param name="to">the end of the period</param>
+        /// <param name="query">the filters used for querying</param>
         /// <returns>the rooms that are available during this period with their price</returns>
-        [SwaggerResponse(HttpStatusCode.OK, type: typeof(IEnumerable<Availability>))]
+        [SwaggerResponse(HttpStatusCode.OK, type: typeof(AvailabilitiesView))]
         [HttpGet]
         [Route]
-        public IHttpActionResult Get(DateTimeOffset from, DateTimeOffset to)
+        public IHttpActionResult Get([FromUri] AvailabilityQuery query)
         {
-            if (from.Date < DateTimeOffset.Now.Date)
+            if (query == null)
             {
-                return this.BadRequest("the period can't be in the past");
+                query = new AvailabilityQuery();
             }
-            if (from.Date >= to.Date)
+
+            this.Validate(query);
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            if (query.From.Value.Date >= query.To.Value.Date)
             {
                 return this.BadRequest("the period is invalid");
             }
 
-            var availabilities = new[] { new Availability { RoomCapacity = 1, RoomId = 1, RoomPrice = 50 } };
-            return this.Ok(availabilities);
+            var availabilities = new[] {new Availability {RoomCapacity = 1, RoomId = 1, RoomPrice = 50}};
+            return this.Ok(new AvailabilitiesView(availabilities));
         }
     }
 }

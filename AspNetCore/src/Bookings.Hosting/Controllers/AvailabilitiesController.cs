@@ -1,6 +1,4 @@
-﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Bookings.Hosting.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,23 +17,18 @@ namespace Bookings.Hosting.Controllers
         /// <summary>
         /// Allow to search the availabilities between 2 dates
         /// </summary>
-        /// <param name="from">the start of the period</param>
-        /// <param name="to">the end of the period</param>
+        /// <param name="query">the filters used for querying</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(IEnumerable<Availability>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AvailabilitiesView), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult Get([Required]DateTimeOffset from, [Required]DateTimeOffset to)
+        public IActionResult Get([FromQuery]AvailabilityQuery query)
         {
-            if (from.Date < DateTimeOffset.Now.Date)
-            {
-                return this.BadRequest("the period can't be in the past");
-            }
-            if (from.Date >= to.Date)
+            if (query.From.Value.Date >= query.To.Value.Date)
             {
                 return this.BadRequest("the period is invalid");
             }
             var availabilities = new[] {new Availability { RoomCapacity = 1, RoomId = 1, RoomPrice = 50 }};
-            return this.Ok(availabilities);
+            return this.Ok(new AvailabilitiesView(availabilities));
         }
     }
 }
