@@ -1,22 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using Bookings.Hosting.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookings.Hosting.Controllers
 {
+    /// <summary>
+    /// The availabilities
+    /// </summary>
     [Route("api/v1/availabilities")]
     [ApiController]
     public class AvailabilitiesController : ControllerBase
     {
+        /// <summary>
+        /// Allow to search the availabilities between 2 dates
+        /// </summary>
+        /// <param name="from">the start of the period</param>
+        /// <param name="to">the end of the period</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(IEnumerable<Availability>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(500)]
         [HttpGet]
-        public IActionResult Get(
-            DateTimeOffset from,
-            DateTimeOffset to
-        )
+        public IActionResult Get(DateTimeOffset from, DateTimeOffset to)
         {
             var availabilities = new[] {new Availability { RoomCapacity = 1, RoomId = 1, RoomPrice = 50 }};
             return this.Ok(availabilities);
         }
-
     }
 }
