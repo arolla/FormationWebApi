@@ -26,6 +26,10 @@ namespace Bookings.Hosting.Controllers
         [HttpGet]
         public IActionResult Get([Required]DateTimeOffset from, [Required]DateTimeOffset to)
         {
+            if (from.Date < DateTimeOffset.Now.Date)
+            {
+                return this.BadRequest("the period can't be in the past");
+            }
             if (from.Date >= to.Date)
             {
                 return this.BadRequest("the period is invalid");
