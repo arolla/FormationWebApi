@@ -25,6 +25,11 @@ namespace Bookings.Hosting.Controllers
         [Route]
         public IHttpActionResult Get(DateTimeOffset from, DateTimeOffset to)
         {
+            if (from.Date >= to.Date)
+            {
+                return this.BadRequest("the period is invalid");
+            }
+
             var availabilities = new[] { new Availability { RoomCapacity = 1, RoomId = 1, RoomPrice = 50 } };
             return this.Ok(availabilities);
         }
