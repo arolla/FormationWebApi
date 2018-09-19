@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C76570E-0B0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookings.Hosting", "src\Bookings.Hosting\Bookings.Hosting.csproj", "{792C4D3B-F555-4565-ACDB-CDAB94EA6EDB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{477A1D56-3A63-4830-A1D4-10BE857B0CC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookings.Hosting.Tests", "tests\Bookings.Hosting.Tests\Bookings.Hosting.Tests.csproj", "{476D7CD5-3771-4221-8AEE-EBF36187D91D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +36,21 @@ Global
 		{792C4D3B-F555-4565-ACDB-CDAB94EA6EDB}.Release|x64.Build.0 = Release|Any CPU
 		{792C4D3B-F555-4565-ACDB-CDAB94EA6EDB}.Release|x86.ActiveCfg = Release|Any CPU
 		{792C4D3B-F555-4565-ACDB-CDAB94EA6EDB}.Release|x86.Build.0 = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|x64.Build.0 = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Debug|x86.Build.0 = Debug|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|x64.ActiveCfg = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|x64.Build.0 = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|x86.ActiveCfg = Release|Any CPU
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{792C4D3B-F555-4565-ACDB-CDAB94EA6EDB} = {8C76570E-0B04-4D8B-8B8A-7BE88FFED4E2}
+		{476D7CD5-3771-4221-8AEE-EBF36187D91D} = {477A1D56-3A63-4830-A1D4-10BE857B0CC9}
 	EndGlobalSection
 EndGlobal
