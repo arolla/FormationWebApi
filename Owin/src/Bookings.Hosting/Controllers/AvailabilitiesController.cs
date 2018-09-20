@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Web.Http;
 using Bookings.Hosting.Models;
 using Swashbuckle.Swagger.Annotations;
@@ -21,12 +20,12 @@ namespace Bookings.Hosting.Controllers
         /// <returns>the rooms that are available during this period with their price</returns>
         [SwaggerResponse(HttpStatusCode.OK, type: typeof(AvailabilitiesView))]
         [HttpGet]
-        [Route]
-        public IHttpActionResult Get([FromUri] AvailabilityQuery query)
+        [Route(Name = Operations.GetAvailabilities)]
+        public IHttpActionResult Get([FromUri] AvailabilitiesQuery query)
         {
             if (query == null)
             {
-                query = new AvailabilityQuery();
+                query = new AvailabilitiesQuery();
             }
 
             this.Validate(query);
@@ -40,7 +39,7 @@ namespace Bookings.Hosting.Controllers
                 return this.BadRequest("the period is invalid");
             }
 
-            var availabilities = new[] {new Availability {RoomCapacity = 1, RoomId = 1, RoomPrice = 50}};
+            var availabilities = new[] {new AvailabilityView {RoomCapacity = 1, RoomId = 1, RoomPrice = 50}};
             return this.Ok(new AvailabilitiesView(availabilities));
         }
     }

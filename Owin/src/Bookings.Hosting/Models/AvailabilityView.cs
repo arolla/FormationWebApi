@@ -3,7 +3,7 @@
     /// <summary>
     /// A room availability for fixed period
     /// </summary>
-    public class Availability
+    public class AvailabilityView
     {
         /// <summary>
         /// The identifier of the room

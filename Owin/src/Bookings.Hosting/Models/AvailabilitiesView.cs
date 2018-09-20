@@ -7,7 +7,7 @@ namespace Bookings.Hosting.Models
     /// </summary>
     public class AvailabilitiesView
     {
-        public AvailabilitiesView(IEnumerable<Availability> availabilities)
+        public AvailabilitiesView(IEnumerable<AvailabilityView> availabilities)
         {
             Availabilities = availabilities;
         }
@@ -15,6 +15,6 @@ namespace Bookings.Hosting.Models
         /// <summary>
         /// the availabilities
         /// </summary>
-        public IEnumerable<Availability> Availabilities { get; }
+        public IEnumerable<AvailabilityView> Availabilities { get; }
     }
 }
