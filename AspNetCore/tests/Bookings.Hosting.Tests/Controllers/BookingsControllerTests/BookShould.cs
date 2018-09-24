@@ -67,5 +67,31 @@ namespace Bookings.Hosting.Tests.Controllers.BookingsControllerTests
             var response = await HttpClient.PostAsync("api/v1/bookings", new JsonContent(input));
             Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
         }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_not_logged()
+        {
+            UserContext.NotLogged();
+            
+            var response = await HttpClient.PostAsync("api/v1/bookings", new JsonContent(ValidInput));
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            this.BookingService
+                .DidNotReceiveWithAnyArgs()
+                .Book(Arg.Any<BookingCreation>());
+        }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_logged_but_does_not_has_the_global_scope()
+        {
+            UserContext.LoggedWithScopes("fakeScope");
+
+            var response = await HttpClient.PostAsync("api/v1/bookings", new JsonContent(ValidInput));
+
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+            this.BookingService
+                .DidNotReceiveWithAnyArgs()
+                .Book(Arg.Any<BookingCreation>());
+        }
     }
 }

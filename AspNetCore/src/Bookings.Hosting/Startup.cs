@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Bookings.Hosting.Configurations;
 using Bookings.Hosting.Handlers;
 using Bookings.Services;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace Bookings.Hosting
@@ -28,8 +29,9 @@ namespace Bookings.Hosting
             services.AddSingleton<IBookingService>(provider => provider.GetService<RoomService>());
             services.AddSingleton<IRoomStore, InMemoryRoomStore>();
             services.AddSingleton<IBookingStore, InMemoryBookingStore>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(o => o.Filters.Add(new AuthorizeFilter(Policies.GlobalScope))).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.ConfigureSwagger();
+            services.AddSecurity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +49,7 @@ namespace Bookings.Hosting
             app.ConfigureExceptionHandler(logFactory.CreateLogger("ExceptionHandler"));
             app.UseHttpsRedirection();
             app.ConfigureSwagger();
+            app.ConfigureSecurity();
             app.UseMvc();
         }
     }

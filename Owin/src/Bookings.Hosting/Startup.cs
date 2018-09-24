@@ -31,6 +31,7 @@ namespace Bookings.Hosting
             config.DependencyResolver= new SimpleInjectorWebApiDependencyResolver(container);
             config.MapHttpAttributeRoutes();
             config.ConfigureSwagger();
+            appBuilder.ConfigureSecurity(config);
             appBuilder.UseWebApi(config); 
         }
 

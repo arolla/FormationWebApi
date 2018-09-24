@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Bookings.Hosting.Examples;
@@ -16,7 +17,7 @@ namespace Bookings.Hosting.Configurations
             applicationBuilder.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
-                   
+                    c.ConfigureSecurity();
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Une super API de réservation de chambre");
                 });
 
@@ -34,6 +35,8 @@ namespace Bookings.Hosting.Configurations
                     var commentsFile = Path.Combine(baseDirectory, commentsFileName);
                     c.IncludeXmlComments(commentsFile);
                     c.ExampleFilters();
+
+                    c.ConfigureSecurity();
                 });
         }
     }

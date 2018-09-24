@@ -41,5 +41,33 @@ namespace Bookings.Hosting.Tests.Controllers.BookingsControllerTests
             var response = await HttpClient.DeleteAsync($"api/v1/bookings/{bookingId}");
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_not_logged()
+        {
+            UserContext.NotLogged();
+            
+            var bookingId = 1;
+            var response = await HttpClient.DeleteAsync($"api/v1/bookings/{bookingId}");
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            this.BookingService
+                .DidNotReceiveWithAnyArgs()
+                .Cancel(Arg.Any<int>());
+        }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_logged_but_does_not_has_the_global_scope()
+        {
+            UserContext.LoggedWithScopes("fakeScope");
+
+            var bookingId = 1;
+            var response = await HttpClient.DeleteAsync($"api/v1/bookings/{bookingId}");
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            this.BookingService
+                .DidNotReceiveWithAnyArgs()
+                .Cancel(Arg.Any<int>());
+        }
     }
 }

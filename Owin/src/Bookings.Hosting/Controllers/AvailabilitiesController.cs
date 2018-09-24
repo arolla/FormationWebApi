@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Bookings.Core;
@@ -17,6 +16,7 @@ namespace Bookings.Hosting.Controllers
     [RoutePrefix("api/v1/availabilities")]
     [SwaggerResponse(HttpStatusCode.InternalServerError)]
     [SwaggerResponse(HttpStatusCode.BadRequest)]
+    [SwaggerResponse(HttpStatusCode.Unauthorized)]
     public class AvailabilitiesController : ApiController
     {
         private readonly IAvailabilityService availabilities;

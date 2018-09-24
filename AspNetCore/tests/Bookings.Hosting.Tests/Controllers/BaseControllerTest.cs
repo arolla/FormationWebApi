@@ -10,13 +10,16 @@ namespace Bookings.Hosting.Tests
     {
         private TestServer server;
         protected HttpClient HttpClient { get; private set; }
-
+        protected TestUserContext UserContext { get; private set; }
         [SetUp]
         public void Setup()
         {
+            UserContext = new TestUserContext();
+            UserContext.WithGlobalScope();
             this.server = new TestServer(
                 new WebHostBuilder()
-                .ConfigureTestServices(ConfigureService)
+                    .ConfigureTestServices(ConfigureService)
+                    .ConfigureTestServices(services => services.AddSingleton(this.UserContext))
                 .UseStartup<TestsStartup>());
             this.HttpClient = this.server.CreateClient();
         }

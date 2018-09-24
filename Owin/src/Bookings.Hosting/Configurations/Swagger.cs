@@ -21,8 +21,9 @@ namespace Bookings.Hosting.Configurations
                     var commentsFile = Path.Combine(baseDirectory, commentsFileName);
                     c.IncludeXmlComments(commentsFile);
                     c.OperationFilter<ExamplesOperationFilter>();
+                    c.ConfigureSecurity();
                 })
-                 .EnableSwaggerUi();
+                 .EnableSwaggerUi(o => o.ConfigureSecurity());
             return httpConfiguration;
         }
     }

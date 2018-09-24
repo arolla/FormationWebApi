@@ -9,13 +9,16 @@ namespace Bookings.Hosting.Tests.Controllers
     {
         private TestServer server;
         protected HttpClient HttpClient { get; private set; }
+        protected TestUserContext UserContext { get; set; }
 
         [SetUp]
         public void Setup()
         {
             var container = new Container();
             Configure(container);
-            var startup = new TestsStartup(container);
+            UserContext = new TestUserContext();
+            UserContext.WithGlobalScope();
+            var startup = new TestsStartup(container, UserContext);
             this.server = TestServer.Create(startup.Configuration);
             this.HttpClient = this.server.HttpClient;
         }

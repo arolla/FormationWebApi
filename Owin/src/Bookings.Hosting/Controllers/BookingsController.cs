@@ -13,6 +13,7 @@ namespace Bookings.Hosting.Controllers
     [RoutePrefix("api/v1/bookings")]
     [SwaggerResponse(HttpStatusCode.InternalServerError)]
     [SwaggerResponse(HttpStatusCode.BadRequest)]
+    [SwaggerResponse(HttpStatusCode.Unauthorized)]
     public class BookingsController : ApiController
     {
         private readonly IBookingService bookingService;

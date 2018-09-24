@@ -1,5 +1,6 @@
 ﻿using Bookings.Core;
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using SimpleInjector;
 
 namespace Bookings.Hosting.Tests.Controllers.BookingsControllerTests
@@ -10,6 +11,7 @@ namespace Bookings.Hosting.Tests.Controllers.BookingsControllerTests
 
         protected override void Configure(Container container)
         {
+            BookingService.ClearSubstitute();
             container.RegisterInstance(BookingService);
         }
     }

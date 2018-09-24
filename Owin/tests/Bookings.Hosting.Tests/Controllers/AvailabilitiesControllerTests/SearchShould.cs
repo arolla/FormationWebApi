@@ -7,6 +7,7 @@ using Bookings.Core;
 using Bookings.Hosting.Models;
 using Bookings.Services;
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using NUnit.Framework;
 using SimpleInjector;
 
@@ -18,22 +19,27 @@ namespace Bookings.Hosting.Tests.Controllers.AvailabilitiesControllerTests
 
         protected override void Configure(Container container)
         {
+            availabilityService.ClearSubstitute();
             container.RegisterInstance(availabilityService);
         }
 
         [Test]
         public async Task Return_Ok_when_period_is_valid()
         {
+
             var from = DateTimeOffset.Now;
             var to = DateTimeOffset.Now.AddDays(1);
             this.availabilityService
                 .GetAvailabilities(Arg.Is<AvailabilitySearch>(a => a.From == from.Date && a.To == to.Date))
-                .Returns(AvailabilitiesResult.Succeed.Create(new []{ new Availability(new Room(1, 1, 50),from.Date, to.Date, 50)  }));
-            
+                .Returns(AvailabilitiesResult.Succeed.Create(new[] { new Availability(new Room(1, 1, 50), from.Date, to.Date, 50) }));
+
             var response = await this.HttpClient.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var availabilities = await response.Content.ReadAsAsync<AvailabilitiesView>();
             Assert.AreEqual(1, availabilities.Availabilities.Count());
+            this.availabilityService
+                .ReceivedWithAnyArgs(1)
+                .GetAvailabilities(Arg.Is<AvailabilitySearch>(a => a.From == from.Date && a.To == to.Date));
         }
 
         [Test]
@@ -68,6 +74,36 @@ namespace Bookings.Hosting.Tests.Controllers.AvailabilitiesControllerTests
             var to = DateTimeOffset.Now.AddDays(1);
             var response = await this.HttpClient.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_not_logged()
+        {
+            UserContext.NotLogged();
+
+            var from = DateTimeOffset.Now;
+            var to = DateTimeOffset.Now.AddDays(1);
+
+            var response = await this.HttpClient.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            this.availabilityService
+                .DidNotReceiveWithAnyArgs()
+                .GetAvailabilities(Arg.Any<AvailabilitySearch>());
+        }
+
+        [Test]
+        public async Task Return_Unauthorized_when_user_is_logged_but_does_not_has_the_global_scope()
+        {
+            UserContext.LoggedWithScopes("fakeScope");
+
+            var from = DateTimeOffset.Now;
+            var to = DateTimeOffset.Now.AddDays(1);
+
+            var response = await this.HttpClient.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            this.availabilityService
+                .DidNotReceiveWithAnyArgs()
+                .GetAvailabilities(Arg.Any<AvailabilitySearch>());
         }
     }
 }
