@@ -1,7 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Bookings.Core;
 using Bookings.Hosting.Models;
+using Bookings.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +19,20 @@ namespace Bookings.Hosting.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AvailabilitiesController : ControllerBase
     {
+        private readonly IAvailabilityService availabilities;
+
+        public AvailabilitiesController(IAvailabilityService availabilities)
+        {
+            this.availabilities = availabilities;
+        }
+
         /// <summary>
         /// Allow to search the availabilities between 2 dates
         /// </summary>
         /// <param name="from">the start of the period</param>
         /// <param name="to">the end of the period</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(IEnumerable<Availability>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<AvailabilityView>), StatusCodes.Status200OK)]
         [HttpGet]
         public IActionResult Get([Required]DateTimeOffset from, [Required]DateTimeOffset to)
         {
@@ -34,8 +44,18 @@ namespace Bookings.Hosting.Controllers
             {
                 return this.BadRequest("the period is invalid");
             }
-            var availabilities = new[] {new Availability { RoomCapacity = 1, RoomId = 1, RoomPrice = 50 }};
-            return this.Ok(availabilities);
+            var result = this.availabilities.GetAvailabilities(new AvailabilitySearch(from, to, null));
+
+            switch (result)
+            {
+                case AvailabilitiesResult.Succeed succeed:
+                    var data = succeed.Availabilities.Select(AvailabilityView.From);
+                    return this.Ok(data);
+                case AvailabilitiesResult.Error error:
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, error.Exception);
+                default:
+                    return this.StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

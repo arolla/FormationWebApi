@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Bookings.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bookings.Hosting.Configurations;
+using Bookings.Services;
 
 namespace Bookings.Hosting
 {
@@ -19,6 +21,11 @@ namespace Bookings.Hosting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<RoomService>();
+            services.AddSingleton<IAvailabilityService>(provider => provider.GetService<RoomService>());
+            services.AddSingleton<IBookingService>(provider => provider.GetService<RoomService>());
+            services.AddSingleton<IRoomStore, InMemoryRoomStore>();
+            services.AddSingleton<IBookingStore, InMemoryBookingStore>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.ConfigureSwagger();
         }

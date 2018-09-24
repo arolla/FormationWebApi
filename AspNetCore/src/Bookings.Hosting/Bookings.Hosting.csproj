@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bookings.Core\Bookings.Core.csproj" />
+    <ProjectReference Include="..\Bookings.Services\Bookings.Services.csproj" />
+  </ItemGroup>
+
 </Project>
