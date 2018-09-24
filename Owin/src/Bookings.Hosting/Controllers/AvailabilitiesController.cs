@@ -2,8 +2,10 @@
 using System.Net;
 using System.Web.Http;
 using Bookings.Core;
+using Bookings.Hosting.Examples;
 using Bookings.Hosting.Models;
 using Bookings.Services;
+using Swashbuckle.Examples;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Bookings.Hosting.Controllers
@@ -29,6 +31,7 @@ namespace Bookings.Hosting.Controllers
         /// <param name="query">the filters used for querying</param>
         /// <returns>the rooms that are available during this period with their price</returns>
         [SwaggerResponse(HttpStatusCode.OK, type: typeof(AvailabilitiesView))]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(AvailabilitiesViewExample))]
         [HttpGet]
         [Route(Name = Operations.GetAvailabilities)]
         public IHttpActionResult Search([FromUri] AvailabilitiesQuery query)

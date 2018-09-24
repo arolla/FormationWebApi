@@ -1,9 +1,11 @@
 using System.Linq;
 using Bookings.Core;
+using Bookings.Hosting.Examples;
 using Bookings.Hosting.Models;
 using Bookings.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Bookings.Hosting.Controllers
 {

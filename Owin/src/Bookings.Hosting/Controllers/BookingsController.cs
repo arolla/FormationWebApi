@@ -3,7 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Bookings.Core;
+using Bookings.Hosting.Examples;
 using Bookings.Hosting.Models;
+using Swashbuckle.Examples;
 using Swashbuckle.Swagger.Annotations;
 
 namespace Bookings.Hosting.Controllers
@@ -28,7 +30,9 @@ namespace Bookings.Hosting.Controllers
         [HttpPost]
         [Route(Name = Operations.Book)]
         [SwaggerResponseRemoveDefaults]
+        [SwaggerRequestExample(typeof(BookingInput), typeof(BookingInputExample))]
         [SwaggerResponse(HttpStatusCode.Created, type: typeof(BookingView))]
+        [SwaggerResponseExample(HttpStatusCode.Created, typeof(BookingViewExample))]
         [SwaggerResponse(HttpStatusCode.Conflict)]
         public IHttpActionResult Book([FromBody] BookingInput input)
         {
@@ -57,6 +61,7 @@ namespace Bookings.Hosting.Controllers
         [HttpGet]
         [Route("{id}", Name = Operations.GetBooking)]
         [SwaggerResponse(HttpStatusCode.OK, type:typeof(BookingView))]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(BookingViewExample))]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         public IHttpActionResult GetById(int id)
         {
@@ -83,6 +88,7 @@ namespace Bookings.Hosting.Controllers
         [HttpGet]
         [Route(Name = Operations.GetBookings)]
         [SwaggerResponse(HttpStatusCode.OK, type:typeof(BookingsView))]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(BookingsViewExample))]
         public IHttpActionResult Search([FromUri]BookingsQuery query)
         {
             if (query == null)
@@ -122,7 +128,9 @@ namespace Bookings.Hosting.Controllers
         /// <returns></returns>
         [HttpPatch]
         [Route("{id}", Name = Operations.UpdateBooking)]
+        [SwaggerRequestExample(typeof(BookingPatch), typeof(BookingPatchExample))]
         [SwaggerResponse(HttpStatusCode.OK, type:typeof(BookingView))]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(BookingViewExample))]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         public IHttpActionResult Update(int id, [FromBody]BookingPatch patch)
         {

@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Bookings.Hosting.Examples;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Bookings.Hosting.Configurations
@@ -23,6 +25,7 @@ namespace Bookings.Hosting.Configurations
 
         public static IServiceCollection ConfigureSwagger(this IServiceCollection serviceCollection)
         {
+            serviceCollection.AddSwaggerExamplesFromAssemblyOf<AvailabilitiesViewExample>();
             return serviceCollection.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new Info {Title = "Une super API de réservation de chambre", Version = "v1"});
@@ -30,6 +33,7 @@ namespace Bookings.Hosting.Configurations
                     var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
                     var commentsFile = Path.Combine(baseDirectory, commentsFileName);
                     c.IncludeXmlComments(commentsFile);
+                    c.ExampleFilters();
                 });
         }
     }

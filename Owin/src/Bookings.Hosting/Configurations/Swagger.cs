@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Web.Http;
 using Swashbuckle.Application;
+using Swashbuckle.Examples;
 
 namespace Bookings.Hosting.Configurations
 {
@@ -19,6 +20,7 @@ namespace Bookings.Hosting.Configurations
                     var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
                     var commentsFile = Path.Combine(baseDirectory, commentsFileName);
                     c.IncludeXmlComments(commentsFile);
+                    c.OperationFilter<ExamplesOperationFilter>();
                 })
                  .EnableSwaggerUi();
             return httpConfiguration;
