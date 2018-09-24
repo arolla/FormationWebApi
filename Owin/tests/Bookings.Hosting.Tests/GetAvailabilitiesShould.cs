@@ -29,7 +29,7 @@ namespace Bookings.Hosting.Tests
             {
                 var from = DateTimeOffset.Now;
                 var to = from;
-                var response = await client.GetAsync($"api/v1/availabilities?from={from}&to={to}");
+                var response = await client.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
                 Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             }
         }
@@ -42,7 +42,7 @@ namespace Bookings.Hosting.Tests
             {
                 var from = DateTimeOffset.Now.AddDays(15);
                 var to = DateTimeOffset.Now;
-                var response = await client.GetAsync($"api/v1/availabilities?from={from}&to={to}");
+                var response = await client.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
                 Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             }
         }
