@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Bookings.Core;
 using Bookings.Hosting.Models;
@@ -35,8 +33,8 @@ namespace Bookings.Hosting.Tests.Controllers.AvailabilitiesControllerTests
             var response = await this.HttpClient.GetAsync($"api/v1/availabilities?from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
-            var availabilities = JsonConvert.DeserializeObject<IEnumerable<AvailabilityView>>(content);
-            Assert.AreEqual(1, availabilities.Count());
+            var availabilities = JsonConvert.DeserializeObject<AvailabilitiesView>(content);
+            Assert.AreEqual(1, availabilities.Availabilities.Count());
         }
 
         [Test]

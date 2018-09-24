@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Bookings.Core;
 using Bookings.Hosting.Models;
@@ -29,28 +26,23 @@ namespace Bookings.Hosting.Controllers
         /// <summary>
         /// Allow to search the availabilities between 2 dates
         /// </summary>
-        /// <param name="from">the start of the period</param>
-        /// <param name="to">the end of the period</param>
+        /// <param name="query">the filters used for querying</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(IEnumerable<AvailabilityView>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AvailabilitiesView), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult Get([Required]DateTimeOffset from, [Required]DateTimeOffset to)
+        public IActionResult Search([FromQuery]AvailabilitiesQuery query)
         {
-            if (from.Date < DateTimeOffset.Now.Date)
-            {
-                return this.BadRequest("the period can't be in the past");
-            }
-            if (from.Date >= to.Date)
+            if (query.From.Value.Date >= query.To.Value.Date)
             {
                 return this.BadRequest("the period is invalid");
             }
-            var result = this.availabilities.GetAvailabilities(new AvailabilitySearch(from, to, null));
+            var result = this.availabilities.GetAvailabilities(query.Map());
 
             switch (result)
             {
                 case AvailabilitiesResult.Succeed succeed:
                     var data = succeed.Availabilities.Select(AvailabilityView.From);
-                    return this.Ok(data);
+                    return this.Ok(new AvailabilitiesView(data));
                 case AvailabilitiesResult.Error error:
                     return this.StatusCode(StatusCodes.Status500InternalServerError, error.Exception);
                 default:

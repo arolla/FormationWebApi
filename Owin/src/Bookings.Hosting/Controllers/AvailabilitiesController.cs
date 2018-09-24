@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Bookings.Core;
@@ -28,30 +26,36 @@ namespace Bookings.Hosting.Controllers
         /// <summary>
         /// Allow to search the availabilities between 2 dates
         /// </summary>
-        /// <param name="from">the start of the period</param>
-        /// <param name="to">the end of the period</param>
+        /// <param name="query">the filters used for querying</param>
         /// <returns>the rooms that are available during this period with their price</returns>
-        [SwaggerResponse(HttpStatusCode.OK, type: typeof(IEnumerable<AvailabilityView>))]
+        [SwaggerResponse(HttpStatusCode.OK, type: typeof(AvailabilitiesView))]
         [HttpGet]
-        [Route]
-        public IHttpActionResult Get(DateTimeOffset from, DateTimeOffset to)
+        [Route(Name = Operations.GetAvailabilities)]
+        public IHttpActionResult Search([FromUri] AvailabilitiesQuery query)
         {
-            if (from.Date < DateTimeOffset.Now.Date)
+            if (query == null)
             {
-                return this.BadRequest("the period can't be in the past");
+                query = new AvailabilitiesQuery();
+                this.Validate(query);
             }
-            if (from.Date >= to.Date)
+            
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            if (query.From.Value.Date >= query.To.Value.Date)
             {
                 return this.BadRequest("the period is invalid");
             }
 
-            var result = this.availabilities.GetAvailabilities(new AvailabilitySearch(from, to, null));
+            var result = this.availabilities.GetAvailabilities(query.Map());
 
             switch (result)
             {
                 case AvailabilitiesResult.Succeed succeed:
                     var data = succeed.Availabilities.Select(AvailabilityView.From);
-                    return this.Ok(data);
+                    return this.Ok(new AvailabilitiesView(data));
                 case AvailabilitiesResult.Error error:
                     return InternalServerError(error.Exception);
                 default:
