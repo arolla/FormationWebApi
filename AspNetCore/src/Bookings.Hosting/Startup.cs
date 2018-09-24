@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bookings.Hosting.Configurations;
+using Bookings.Hosting.Handlers;
 using Bookings.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Bookings.Hosting
 {
@@ -31,7 +33,7 @@ namespace Bookings.Hosting
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logFactory)
         {
             if (env.IsDevelopment())
             {
@@ -42,6 +44,7 @@ namespace Bookings.Hosting
                 app.UseHsts();
             }
 
+            app.ConfigureExceptionHandler(logFactory.CreateLogger("ExceptionHandler"));
             app.UseHttpsRedirection();
             app.ConfigureSwagger();
             app.UseMvc();
